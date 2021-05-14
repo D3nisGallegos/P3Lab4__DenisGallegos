@@ -1,7 +1,7 @@
 #include "Casilla.h"
 
 Casilla::Casilla(){
-	 
+	 pieza->~Pieza();
 }
 
 Casilla :: Casilla(Pieza* x){

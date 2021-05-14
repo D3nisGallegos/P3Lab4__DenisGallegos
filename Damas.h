@@ -16,6 +16,8 @@ class Damas{
 		Damas();
 		void iniciartablero(); 	
 		void imprimirtablero();
+		int validargane(); 
+		bool validarmover(int, int, int, int, int);
 		bool validarcaptura(int, int, int, int);
 		void mover();
 		void comer();
