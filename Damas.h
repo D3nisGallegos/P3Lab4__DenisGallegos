@@ -18,8 +18,8 @@ class Damas{
 		void imprimirtablero();
 		int validargane(); 
 		bool validarmover(int, int, int, int, int);
+		void mover(int, int, int, int);
 		bool validarcaptura(int, int, int, int);
-		void mover();
 		void comer();
 		void capturarpiezas(); 
 		void jugar();

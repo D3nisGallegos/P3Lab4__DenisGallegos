@@ -58,8 +58,9 @@ void Damas :: iniciartablero(){
 }
 
 void Damas :: imprimirtablero(){
+	cout << "  0 1 2 3 4 5 6 7" <<endl;
 	for (int c =0; c < 8; c++){
-		cout << "|";
+		cout << c <<"|";
 		for (int j = 0; j < 8;j++){
 			Casilla* casilla = tablero [c][j];
 			Pieza* pieza = casilla->GETpieza(); 
@@ -68,12 +69,15 @@ void Damas :: imprimirtablero(){
 				Pieza* objeto2 = objeto->GETpieza(); 
 				bool n = objeto2->GETbando();
 				 if (n == false){
-					cout << 'X' << " ";
+					cout << 'X';
 				}else if (n == true){
-					cout << 'O' << " ";
+					cout << 'O';
 				}
 			}else {
-				cout << ' ' << " ";
+				cout << ' ';
+			}
+			if (j < 7){
+				cout << " ";
 			}
 		}
 		cout << "|";
@@ -102,7 +106,6 @@ int Damas :: validargane(){
 				
 			}
 		}
-		cout <<endl; 
 	}
 	if (pblancas == 0){
 		veredicto = 2;  //gano el negro
@@ -116,24 +119,32 @@ int Damas :: validargane(){
 
 bool Damas :: validarmover(int turno, int fila, int columna, int x, int y){
 	bool validar = false; 
-	Casilla* casilla = matriz [fila][columna];
+	Casilla* casilla = tablero [fila][columna];
 	Pieza* pieza = casilla->GETpieza();
-	Casilla* casilla2 = matriz [x][y];
-	Poeza* pieza2 = casilla2->GETpieza();
+	Casilla* casilla2 = tablero [x][y];
+	Pieza* pieza2 = casilla2->GETpieza();
 	bool n = pieza->GETbando(); 
 	if ((fila < 0 || columna < 0 || x < 0 || y < 0) || (fila > 7 || columna > 7 || x > 7 || y > 7)){
-		
+
 	}else if (pieza == NULL || pieza2 != NULL){
-		
-	}else if (turno == 1 && bando == false){
-		
-	}else if (turno == 2 && bando == true){
-		
-	}else {
+
+	}else if (turno == 0 && n == false){
+
+	}else if (turno == 1 && n == true){
+
+	}else if ((x == fila + 1 || x == fila - 1) && (y == columna + 1 || y == columna - 1)){
 		validar = true; 
 	}
 	return validar; 
 }
+
+void Damas :: mover(int fila, int columna, int x, int y){
+	Casilla* casilla = tablero [fila][columna];
+	tablero [x][y] = casilla; 
+	tablero [fila][columna] = new Casilla(NULL);
+}
+
+
 
 void Damas :: jugar(){
 	
@@ -162,11 +173,49 @@ void Damas :: jugar(){
 				cin >> y; 
 				v = validarmover(turno, fila, columna, x, y);
 				if (v == true){
-					
+					mover(fila, columna, x, y);
+				}else {
+					cout << "Datos ingresados invalidos." <<endl;
 				}
-			} 
+			}
 		}else if (turno == 1){
-			
+			cout << "Turno del jugador 2: Piezas NEGRAS" << endl; 
+			bool v = false;
+			int fila; 
+			int columna; 
+			int x; 
+			int y; 
+			while (v == false){
+				cout << "Ingrese la fila de la ficha que desea mover: " <<endl; 
+				cin >> fila; 
+				cout << "Ingrese la columna de la ficha que desea mover: " <<endl; 
+				cin >> columna; 
+				cout << "Ingrese la fila a la que se desea mover:  " << endl; 
+				cin >> x; 
+				cout << "Ingrese la columna a la que se desea mover: " <<endl; 
+				cin >> y; 
+				v = validarmover(turno, fila, columna, x, y);
+				if (v == true){
+					mover(fila, columna, x, y);
+				}else {
+					cout << "Datos ingresados invalidos." <<endl;
+				}
+			}
+		}
+		int gane = validargane();
+		if (gane == 1){
+			cout << "!!!El jugador 1 gano!!!" << endl; 
+			ganar = true; 
+		} else if (gane == 2){
+			cout << "!!!El jugador 2 gano!!!" << endl; 
+			ganar = true; 
+		}else if (gane == 0){
+			if (turno == 0){
+				turno = 1; 
+			}else {
+				turno = 0;
+			}
+			ganar = false; 
 		}
 	}
 	imprimirtablero();
