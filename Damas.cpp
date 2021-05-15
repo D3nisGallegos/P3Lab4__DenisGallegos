@@ -121,13 +121,19 @@ bool Damas :: validarmover(int turno, int fila, int columna, int x, int y){
 	bool validar = false; 
 	Casilla* casilla = tablero [fila][columna];
 	Pieza* pieza = casilla->GETpieza();
-	Casilla* casilla2 = tablero [x][y];
-	Pieza* pieza2 = casilla2->GETpieza();
+	Casilla* casilla2;
+	Pieza* pieza2;
+	if ((fila < 0 || columna < 0 || x < 0 || y < 0) || (fila > 7 || columna > 7 || x > 7 || y > 7)){
+		
+	}else {
+		casilla2 = tablero [x][y];
+		pieza2 = casilla2->GETpieza();
+	}
 	bool n = pieza->GETbando(); 
 	if ((fila < 0 || columna < 0 || x < 0 || y < 0) || (fila > 7 || columna > 7 || x > 7 || y > 7)){
 
 	}else if (pieza == NULL || pieza2 != NULL){
-
+		
 	}else if (turno == 0 && n == false){
 
 	}else if (turno == 1 && n == true){
@@ -144,7 +150,201 @@ void Damas :: mover(int fila, int columna, int x, int y){
 	tablero [fila][columna] = new Casilla(NULL);
 }
 
+bool Damas :: validarcaptura(int turno, int fila, int columna, int x, int y){
+	bool validar = false; 
+	Casilla* nulo = tablero [x][y]; 
+	if ((fila < 0 || columna < 0 || x < 0 || y < 0) || (fila > 7 || columna > 7 || x > 7 || y > 7) && nulo == NULL){
+		
+	}else{
+		Casilla* casilla = NULL;
+		Pieza* pieza = NULL;
+		Casilla* casilla2 = NULL;
+		Pieza* pieza2 = NULL;
+		Casilla* casilla3 = NULL;
+		Pieza* pieza3 = NULL; 
+		Casilla* casilla4 = NULL; 
+		Pieza* pieza4 = NULL; 
+		if (fila == 0){
+			if (columna == 0){
+				casilla2 = tablero [fila + 1][columna + 1]; 
+				pieza2 = casilla2->GETpieza(); 
+			}else if (columna == 7){
+				casilla2 = tablero [fila + 1][columna - 1]; 
+				pieza2 = casilla2->GETpieza(); 
+			}else {
+				casilla2 = tablero [fila + 1][columna - 1]; 
+				pieza2 = casilla2->GETpieza(); 
+				casilla3 = tablero [fila + 1][columna + 1]; 
+				pieza3 = casilla3->GETpieza(); 
+			}
+		}else if (fila == 7){
+			if (columna == 0){
+				casilla2 = tablero [fila - 1][columna + 1]; 
+				pieza2 = casilla2->GETpieza(); 
+			}else if (columna == 7){
+				casilla2 = tablero [fila - 1][columna - 1]; 
+				pieza2 = casilla2->GETpieza(); 
+			}else {
+				casilla2 = tablero [fila - 1][columna - 1]; 
+				pieza2 = casilla2->GETpieza(); 
+				casilla3 = tablero [fila - 1][columna + 1]; 
+				pieza3 = casilla3->GETpieza(); 
+			}
+		}else if (columna == 0 && columna == 7){
+			casilla2 = tablero [fila - 1][columna + 1]; 
+			pieza2 = casilla2->GETpieza();
+			casilla3 = tablero [fila + 1][columna + 1]; 
+			pieza3 = casilla3->GETpieza();  
+		}else if (fila > 0 && fila < 7 && columna > 0 && columna <7){
+			casilla = tablero [fila - 1][columna - 1]; 
+			pieza = casilla->GETpieza(); 
+			casilla2 = tablero [fila - 1][columna + 1]; 
+			pieza2 = casilla2->GETpieza(); 
+			casilla3 = tablero [fila + 1][columna - 1]; 
+			pieza3 = casilla3->GETpieza(); 
+			casilla4 = tablero [fila + 1][columna + 1]; 
+			pieza4 = casilla4->GETpieza(); 
+		}
+		Casilla* casillaactual = tablero [fila][columna]; 
+		Pieza* piezaactual = casillaactual->GETpieza();
+		if (casilla != NULL || casilla2 != NULL || casilla3 != NULL || casilla4 != NULL){
+			if (casilla != NULL){
+				bool n = pieza->GETbando();
+				if (turno == 1 && n == true){
+					validar = true; 
+				}else if (turno == 0 && n == false){
+					validar = false;
+				}
+			}else if (casilla2 != NULL){
+				bool n = pieza2->GETbando();
+				if (turno == 1 && n == true){
+					validar = true; 
+				}else if (turno == 0 && n == false){
+					validar = false;
+				}
+			}else if (casilla3 != NULL){
+				bool n = pieza3->GETbando();
+				if (turno == 1 && n == true){
+					validar = true; 
+				}else if (turno == 0 && n == false){
+					validar = false;
+				}
+			}else if (casilla4 != NULL){
+				bool n = pieza4->GETbando();
+				if (turno == 1 && n == true){
+					validar = true; 
+				}else if (turno == 0 && n == false){
+					validar = false;
+				}
+			}
+		}
+	}
+	return validar; 
+	
+	//Casilla* casilla2 = tablero [x + 1][y + 1];
+	//Pieza* pieza2 = casilla2->GETpieza();
+}
 
+bool Damas :: comer(int turno, int fila, int columna, int x, int y){
+		bool validar = false; 
+		int xespecifico; 
+		int yespecifico;
+		Casilla* casilla = NULL;
+		Pieza* pieza = NULL;
+		Casilla* casilla2 = NULL;
+		Pieza* pieza2 = NULL;
+		Casilla* casilla3 = NULL;
+		Pieza* pieza3 = NULL; 
+		Casilla* casilla4 = NULL; 
+		Pieza* pieza4 = NULL; 
+		if (fila == 0){
+			if (columna == 0){
+				casilla2 = tablero [fila + 1][columna + 1]; 
+				pieza2 = casilla2->GETpieza(); 
+			}else if (columna == 7){
+				casilla2 = tablero [fila + 1][columna - 1]; 
+				pieza2 = casilla2->GETpieza(); 
+			}else {
+				casilla2 = tablero [fila + 1][columna - 1]; 
+				pieza2 = casilla2->GETpieza(); 
+				casilla3 = tablero [fila + 1][columna + 1]; 
+				pieza3 = casilla3->GETpieza(); 
+			}
+		}else if (fila == 7){
+			if (columna == 0){
+				casilla2 = tablero [fila - 1][columna + 1]; 
+				pieza2 = casilla2->GETpieza(); 
+			}else if (columna == 7){
+				casilla2 = tablero [fila - 1][columna - 1]; 
+				pieza2 = casilla2->GETpieza(); 
+			}else {
+				casilla2 = tablero [fila - 1][columna - 1]; 
+				pieza2 = casilla2->GETpieza(); 
+				casilla3 = tablero [fila - 1][columna + 1]; 
+				pieza3 = casilla3->GETpieza(); 
+			}
+		}else if (columna == 0 && columna == 7){
+			casilla2 = tablero [fila - 1][columna + 1]; 
+			pieza2 = casilla2->GETpieza();
+			casilla3 = tablero [fila + 1][columna + 1]; 
+			pieza3 = casilla3->GETpieza();  
+		}else if (fila > 0 && fila < 7 && columna > 0 && columna <7){
+			casilla = tablero [fila - 1][columna - 1]; 
+			pieza = casilla->GETpieza(); 
+			casilla2 = tablero [fila - 1][columna + 1]; 
+			pieza2 = casilla2->GETpieza(); 
+			casilla3 = tablero [fila + 1][columna - 1]; 
+			pieza3 = casilla3->GETpieza(); 
+			casilla4 = tablero [fila + 1][columna + 1]; 
+			pieza4 = casilla4->GETpieza(); 
+		}
+		Casilla* casillaactual = tablero [fila][columna]; 
+		Pieza* piezaactual = casillaactual->GETpieza();
+		if (casilla != NULL || casilla2 != NULL || casilla3 != NULL || casilla4 != NULL){
+			if (casilla != NULL){
+				bool n = pieza->GETbando();
+				if (turno == 1 && n == true){
+					validar = true; 
+				}else if (turno == 0 && n == false){
+					validar = false;
+				}
+			}else if (casilla2 != NULL){
+				bool n = pieza2->GETbando();
+				if (turno == 1 && n == true){
+					validar = true; 
+				}else if (turno == 0 && n == false){
+					validar = false;
+				}
+			}else if (casilla3 != NULL){
+				bool n = pieza3->GETbando();
+				if (turno == 1 && n == true){
+					validar = true; 
+				}else if (turno == 0 && n == false){
+					validar = false;
+				}
+			}else if (casilla4 != NULL){
+				bool n = pieza4->GETbando();
+				if (turno == 1 && n == true){
+					validar = true; 
+				}else if (turno == 0 && n == false){
+					validar = false;
+				}
+			}
+		}
+		bool aprobar = false; 
+		Casilla* casillaprobar = tablero [x][y]; 
+		Pieza* piezaprobar = casillaprobar->GETpieza();
+		if (casilla == casillaprobar){
+			aprobar = true; 
+		}else if (casilla2 == casillaprobar){
+			aprobar = true; 
+		}else if (casilla3 == casillaprobar){
+			aprobar = true; 
+		}else if (casilla4 == casillaprobar){
+			aprobar = true; 
+		}	
+		return aprobar; 
+}
 
 void Damas :: jugar(){
 	
@@ -162,6 +362,7 @@ void Damas :: jugar(){
 			int columna; 
 			int x; 
 			int y; 
+			bool enemigo = false; 
 			while (v == false){
 				cout << "Ingrese la fila de la ficha que desea mover: " <<endl; 
 				cin >> fila; 
@@ -171,13 +372,33 @@ void Damas :: jugar(){
 				cin >> x; 
 				cout << "Ingrese la columna a la que se desea mover: " <<endl; 
 				cin >> y; 
-				v = validarmover(turno, fila, columna, x, y);
-				if (v == true){
-					mover(fila, columna, x, y);
-				}else {
+				//enemigo = validarcaptura(turno, fila, columna, x, y);
+				//bool aprobar = false; 
+				/*
+				if (enemigo == true){
+					aprobar = comer(turno, fila, columna, x, y);
+					if (aprobar == true){
+						mover(fila, columna, x, y);
+						v = true; 
+					}
+				}else if (enemigo == false){
+					aprobar = validarmover(turno, fila, columna, x, y);
+					if (aprobar == true){
+						mover(fila, columna, x, y);
+						v = true; 
+					}
+				}
+				if (aprobar == false){
 					cout << "Datos ingresados invalidos." <<endl;
 				}
-			}
+				*/
+				v = validarmover(turno, fila, columna, x, y); 
+				if (v == false){
+					cout << "Datos ingresados invalidos." <<endl;
+				}else {
+					mover(fila, columna, x, y);
+					v = true;
+				}
 		}else if (turno == 1){
 			cout << "Turno del jugador 2: Piezas NEGRAS" << endl; 
 			bool v = false;
@@ -185,6 +406,7 @@ void Damas :: jugar(){
 			int columna; 
 			int x; 
 			int y; 
+			bool enemigo = false; 
 			while (v == false){
 				cout << "Ingrese la fila de la ficha que desea mover: " <<endl; 
 				cin >> fila; 
@@ -194,13 +416,33 @@ void Damas :: jugar(){
 				cin >> x; 
 				cout << "Ingrese la columna a la que se desea mover: " <<endl; 
 				cin >> y; 
-				v = validarmover(turno, fila, columna, x, y);
-				if (v == true){
-					mover(fila, columna, x, y);
-				}else {
+				/*
+				enemigo = validarcaptura(turno, fila, columna, x, y);
+				bool aprobar = false; 
+				if (enemigo == true){
+					aprobar = comer(turno, fila, columna, x, y);
+					if (aprobar == true){
+						mover(fila, columna, x, y);
+						v = true; 
+					}
+				}else if (enemigo == false){
+					aprobar = validarmover(turno, fila, columna, x, y);
+					if (aprobar == true){
+						mover(fila, columna, x, y);
+						v = true; 
+					}
+				}
+				if (aprobar == false){
 					cout << "Datos ingresados invalidos." <<endl;
 				}
-			}
+				*/
+				v = validarmover(turno, fila, columna, x, y); 
+				if (v == false){
+					cout << "Datos ingresados invalidos." <<endl;
+				}else {
+					mover(fila, columna, x, y);
+					v = true;
+				}
 		}
 		int gane = validargane();
 		if (gane == 1){
